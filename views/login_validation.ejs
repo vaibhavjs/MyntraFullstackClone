@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./styles/navbar_style.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="/css/myntra.css" />
+    <STYle>
+        body{
+            background-color: rgb(255, 240, 239);
+        }
+        #navbar{
+            height: 80px;
+            margin-bottom:22px;
+
+        }
+        #sign-container{
+            max-width: 400px;
+            margin: auto;
+            background-color: white;
+            height:500px ;
+            margin-top: 200px;
+            
+        }
+        #sign-container>div{
+            padding: 5% 9% 0 9%;
+        }
+        #sign-container h3{
+            font-family:Arial, Helvetica, sans-serif;
+            font-weight: 500;
+            margin-bottom: 35px;
+            text-align: center;
+        }
+        #sign-container p{
+            margin-top: 0;
+            color: red;
+            text-align: center;
+        }
+        #sign-container span{
+            color:#dcdddf ;
+        }
+        #sign-container input{
+            height: 40px;
+            width: 320px;
+            display: block;
+            box-sizing: border-box;
+            padding: 11px 12px 11px 12px;
+            border: 1px solid #dcdddf;
+            margin-bottom: 30px;
+        }
+        #sign-container button{
+            background-color: #FF3F6C;
+            color: #ffffff;
+            height: 40px;
+            width: 400px;
+            border: 0;
+            margin-top: 30px;
+            margin-left: -11%;
+
+        }
+        
+    </STYle>
+</head>
+<body>
+    <%- include ("partials/navbar.partials.ejs") %>
+
+    <div id="nav"></div>
+    <div id="sign-container">
+        <div>
+            <h3>LOGIN</h2>
+            <form action="" id="signup" onsubmit="signup(event)">
+                
+                <input type="text" name="email" id="email" placeholder="email">
+                <input type="password" name="password" id="password" placeholder="Password">  
+                
+                
+                <button type="submit" onclick="">LOGIN</button>
+            </form>
+            <p id="login-status"></p>
+        </div>
+        
+        
+        
+        
+        
+        
+        
+    </div>
+    
+</body>
+</html>
+
+<!-- <script type="module">
+    import { navbar } from "/navbar/navbar.js";
+
+    let nav = document.getElementById("nav");
+    nav.innerHTML = navbar();
+    
+</script> -->
+
+<script src="/javascrippt/myntrascript.js"></script>
+
+<script>
+
+
+
+    function signup(e){
+        e.preventDefault();
+
+        let signup_form=document.getElementById("signup");
+
+        let data={
+            
+            email:signup_form.email.value,
+            password:signup_form.password.value
+            
+            
+        }
+
+        data=JSON.stringify(data);
+
+        fetch("https://mysterious-depths-64439.herokuapp.com/login",{
+            method: 'POST',
+            body: data,
+            headers:{
+                'Content-Type': 'application/json'
+            }
+        }).then((res)=>{
+            return res.json();
+        }).then((res)=>{
+            console.log(res);
+            
+            if(localStorage.getItem("token")===null){
+                localStorage.setItem("token",JSON.stringify([]));
+            }
+
+            let token = JSON.parse(localStorage.getItem("token"));
+            token=[];
+
+            token.push(res.token);
+
+            localStorage.setItem("token",JSON.stringify(token));
+
+            window.location.href="/wishlists"
+            
+        })
+        .catch((res)=>{
+            let status=document.getElementById("login-status");
+            status.textContent="email or password is incorrect";
+        })
+    }
+
+</script>
